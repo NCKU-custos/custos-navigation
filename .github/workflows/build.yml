@@ -1,0 +1,24 @@
+name: build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      interfaces_ref:
+        type: string
+        default: ""
+        description: "Override custos-interfaces ref. Dispatched from custos-interfaces PRs to test pre-merge."
+
+jobs:
+  build-tier1:
+    name: build (Ubuntu 26.04, Lyrical)
+    uses: NCKU-custos/custos-infra/.github/workflows/ros2-build.yml@main
+    with:
+      ros_distro: lyrical
+      ubuntu_version: "26.04"
+      interfaces_ref: ${{ inputs.interfaces_ref }}
+
+  lint:
+    uses: NCKU-custos/custos-infra/.github/workflows/lint.yml@main

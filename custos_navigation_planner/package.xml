@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>custos_navigation_planner</name>
+  <version>0.1.0</version>
+  <description>Trajectory planning for the Custos drone stack. Consumes navigation and perception streams; produces planned trajectories on custos_navigation_msgs.</description>
+  <maintainer email="opensource@custos.dev">Custos Flight</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>custos_common_msgs</depend>
+  <depend>custos_navigation_msgs</depend>
+  <depend>custos_perception_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
