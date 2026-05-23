@@ -1,0 +1,46 @@
+name: triage-assist
+
+# Brain-dump triage assistant. Logic lives in custos-infra reusables.
+#   - a brain-dump issue opened by an org member  -> feasibility comment
+#   - a maintainer applies the `draft-it` label   -> draft a small PR
+#
+# `on: issues` workflows only ever run from the DEFAULT branch's copy of this file,
+# so this never executes from a feature branch / PR.
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  comment:
+    # Feasibility comment — only for brain-dump issues opened by an org insider.
+    if: >-
+      github.event.action == 'opened' &&
+      startsWith(github.event.issue.title, '[brain dump]') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+    permissions:
+      contents: read
+      issues: write
+    uses: NCKU-custos/custos-infra/.github/workflows/claude-triage-comment.yml@main
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+  draft:
+    # Draft a small PR — only when a maintainer applies `draft-it` (labeling needs triage/write).
+    if: >-
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'draft-it'
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    uses: NCKU-custos/custos-infra/.github/workflows/claude-triage-draft.yml@main
+    with:
+      bot_name: custos-triage-bot[bot]
+      bot_id: ""   # TODO: set to the custos-triage-bot App bot user-id once the App is created
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      CUSTOS_TRIAGE_APP_ID: ${{ secrets.CUSTOS_TRIAGE_APP_ID }}
+      CUSTOS_TRIAGE_PRIVATE_KEY: ${{ secrets.CUSTOS_TRIAGE_PRIVATE_KEY }}
