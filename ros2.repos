@@ -1,0 +1,15 @@
+# CI build-time dependency manifest (vcstool).
+#
+# ros2-build.yml imports this into src/ so colcon can resolve the
+# custos-interfaces packages this repo's package(s) <depend> on
+# (find_package(custos_*_msgs REQUIRED)).
+#
+# Pinned to main: consumer CI tracks the interfaces tip during active
+# development. The version-pinned "ships-together" manifest is
+# custos-bringup/ros2.repos, not this file. ADR 0009's pre-merge dispatch
+# overrides this ref per-PR when testing interface changes.
+repositories:
+  custos-interfaces:
+    type: git
+    url: https://github.com/NCKU-custos/custos-interfaces.git
+    version: main
