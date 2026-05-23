@@ -12,7 +12,6 @@ Workspace-wide rules and state caveats live at `../CLAUDE.md` (= `/space/drone/C
 
 - Single package: `custos_navigation_planner` (`package.xml`, `CMakeLists.txt`, empty `src/`). No SLAM/VIO or planner implementation yet.
 - This package depends on **three** `custos-interfaces` packages, the heaviest interface surface in the stack — every interface bump is more likely to ripple here than anywhere else.
-- **Brace-expansion litter:** there is a literal directory named `{.github` alongside the real `.github/`. Do not stage it.
 
 ## Cross-repo edges
 
@@ -42,6 +41,5 @@ ros2 launch custos_navigation_planner planner.launch.py   # TODO: launch file un
 - Wire types: `custos-interfaces/custos_navigation_msgs/`, `custos_perception_msgs/`, `custos_common_msgs/`
 - Cross-repo CI: ADR 0009 (this repo's `interfaces-consumers.yml` run will be one of the slower ones)
 
-> TODO(post-first-commit): delete the `{.github` litter directory before the initial commit.
 > TODO(post-active): write the SLAM/VIO frontend and the planner implementation.
 > TODO(post-active): decide whether to split SLAM/VIO out of `custos_navigation_planner` once the planner gets large.
